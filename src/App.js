@@ -16,6 +16,8 @@ function App() {
   const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const API_BASE = 'https://card-organizer-backend.onrender.com';
+
   // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,7 +41,7 @@ function App() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/cards', data);
+      const res = await axios.post(`${API_BASE}/api/cards`, data);
       setMessage('✅ Card uploaded successfully!');
       setCards((prev) => [res.data, ...prev]); // Add new card to top
       console.log(res.data);
@@ -53,7 +55,7 @@ function App() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/cards');
+        const res = await axios.get(`${API_BASE}/api/cards`);
         setCards(res.data);
       } catch (err) {
         console.error('❌ Error fetching cards:', err);
@@ -64,7 +66,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cards/${id}`);
+      await axios.delete(`${API_BASE}/api/cards/${id}`);
       setCards(cards.filter((card) => card._id !== id));
       setMessage('🗑️ Card deleted');
     } catch (err) {
